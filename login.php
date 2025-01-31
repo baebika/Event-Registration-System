@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -18,6 +20,23 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+        }
+
+        .container {
+            display: flex;
+            background: #F6F4F0;
+            width: 65%;
+            border-radius: 10px;
+            justify-content: center;
+            align-items: center;
+            height: 75vh;
+            margin: 20px;
+        }
+
+        .display-text {
+            width: 50%;
+            text-align: right;
+            margin-left: 125px;
         }
 
         .login-container {
@@ -45,7 +64,6 @@
             padding: 12px;
             border: 1px solid #ccc;
             border-radius: 25px;
-            box-sizing: border-box;
             font-size: 16px;
             outline: none;
             margin-top: 6px;
@@ -87,24 +105,97 @@
         .signup-link a:hover {
             text-decoration: underline;
         }
+
+        /* Glitch Animation for "Event Registration Project" */
+        .glitch-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            position: relative;
+            color: #333;
+            animation: glitch 2s infinite;
+            display: inline-block;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: 'Event Registration Project';
+            /* Updated content */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            clip-path: polygon(0 0, 100% 0, 100% 30%, 0 30%);
+            animation: glitch 2s infinite;
+        }
+
+        .glitch-text::before {
+            color: #79D7BE;
+            /* Light green color */
+            z-index: -1;
+        }
+
+        .glitch-text::after {
+            color: #79D7BE;
+            /* Dark blue color */
+            clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%);
+            z-index: -2;
+        }
+
+        @keyframes glitch {
+
+            0%,
+            100% {
+                transform: translate(0);
+            }
+
+            20% {
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                transform: translate(2px, -2px);
+            }
+
+            60% {
+                transform: translate(-1px, 1px);
+            }
+
+            80% {
+                transform: translate(1px, -1px);
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form action="#" method="post">
-            <div class="input-group">
-                <label for="username">Username or Email</label>
-                <input type="text" id="username" name="username" required>
+    <div class="container">
+        <div class="display">
+            <div class="display-text">
+                <h2>
+                    <span class="glitch-text">Event Registration Project</span>
+                </h2>
             </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+            <div class="display-image">
+                <img src="./img/login1.png" alt="Login illustration" width="500">
             </div>
-            <button type="submit" class="login-button">Login</button>
-        </form>
-        <p class="signup-link">Don't have an account? <a href="./register.php">Register</a></p>
+        </div>
+        <div class="login-container">
+            <h2>Login</h2>
+            <form action="#" method="post">
+                <div class="input-group">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+            </form>
+            <p class="signup-link">Don't have an account? <a href="./register.php">Register</a></p>
+        </div>
     </div>
 </body>
 
