@@ -45,6 +45,13 @@ class Database
         return $stmt->fetchAll(); //fetchAll() returns an array containing all of the result set rows
     }
 
+    public function selectSingle($query, $params = [])
+    {
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetch(); // This method is crucial
+    }
+
     public function create($query, $params = [])
     {
         $stmt = $this->conn->prepare($query);

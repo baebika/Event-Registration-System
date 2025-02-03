@@ -1,3 +1,39 @@
+<?php
+require_once 'database.php';
+
+if (!isset($_GET['id'])) {
+    header('Location: admin.php');
+    exit();
+}
+
+$eventId = $_GET['id'];
+$conn = new Database();
+$sql = "SELECT * FROM events WHERE eventID= ?";
+$event = $conn->selectSingle($sql, [$eventId]);
+
+if (!$event) {
+    echo "<script>alert('Event not found.'); window.location.href='admin.php';</script>";
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $eventName = $_POST['event-name'];
+    $eventDate = $_POST['event-date'];
+    $eventTime = $_POST['event-time'];
+    $eventLocation = $_POST['event-location'];
+    $eventDescription = $_POST['event-description'];
+
+    $updateSql = "UPDATE events SET eventName = ?, eventDate = ?, eventTime = ?, eventLocation = ?, eventDescription = ? WHERE eventID = ?";
+    $result = $conn->update($updateSql, [$eventName, $eventDate, $eventTime, $eventLocation, $eventDescription, $eventId]);
+
+    if ($result) {
+        echo '<script>alert("Event updated successfully."); window.location.href="admin.php";</script>';
+    } else {
+        echo '<script>alert("Failed to update event.");</script>';
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,8 +46,14 @@
     <title>Edit Event - Event Registration System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Roboto:wght@100..900&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
             font-size: 18px;
@@ -37,12 +79,11 @@
             width: 90%;
             max-width: 800px;
             margin: auto;
+            left: 50%;
             margin-top: 20px;
-            transform: translateX(-50%);
         }
 
         .event-form {
-            margin-bottom: 5px;
             text-align: left;
         }
 
@@ -59,6 +100,7 @@
 
         .event-form input,
         .event-form textarea {
+            font-family: 'Roboto', sans-serif;
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -91,12 +133,13 @@
         .event-form button:hover {
             background-color: #2E5077;
         }
-
     </style>
 </head>
 
 <body>
-    <?php require 'navbar.php'; ?>
+    <div class="navbar">
+        <?php require 'navbar.php'; ?>
+    </div>
     <div class="admin-container">
         <h1>Edit Event</h1>
         <div class="event-form">

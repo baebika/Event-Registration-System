@@ -14,29 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO events (eventName, eventDate, eventTime, eventLocation, eventDescription) VALUES (?, ?, ?, ?, ?)";
         $returnID = $conn->create($sql, [$eventName, $eventDate, $eventTime, $eventLocation, $eventDescription]);
         if ($returnID) {
-            echo '<script>alert("Event created successfully.");</script>';
+            echo '<script>alert("Event created successfully."); window.location.href="admin.php";</script>';
         } else {
             echo '<script>alert("Something went wrong. Please try again later.");</script>';
         }
-        header('Location: admin.php');
-        exit();
     } else {
         echo '<script>alert("All fields are required.");</script>';
     }
-}
-
-// Handle event deletion
-if (isset($_GET['delete_id'])) {
-    $conn = new Database();
-    $sql = "DELETE FROM events WHERE id = ?";
-    $result = $conn->delete($sql, [$_GET['delete_id']]);
-    if ($result) {
-        echo '<script>alert("Event deleted successfully.");</script>';
-    } else {
-        echo '<script>alert("Failed to delete event.");</script>';
-    }
-    header('Location: admin.php');
-    exit();
 }
 
 // Fetch all events from the database
@@ -44,6 +28,7 @@ $conn = new Database();
 $sql = "SELECT * FROM events";
 $events = $conn->SELECT($sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -112,6 +97,7 @@ $events = $conn->SELECT($sql);
 
         .event-form input,
         .event-form textarea {
+            font-family: 'Roboto', sans-serif;;
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -251,9 +237,19 @@ $events = $conn->SELECT($sql);
                         <p>Location: <?php echo htmlspecialchars($event['eventLocation']); ?></p>
                         <p>Description: <?php echo htmlspecialchars($event['eventDescription']); ?></p>
                         <div class="event-actions">
-                            <a href="edit_event.php?id=<?php echo $event['id']; ?>" class="edit-button">Edit</a>
-                            <a href="admin.php?delete_id=<?php echo $event['id']; ?>" class="delete-button" onclick="return confirm('Are you sure you want to delete this event?');">Delete</a>
+                            <form action="edit.php" method="get" style="display: inline;">
+                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($event['eventID']); ?>">
+                                <button type="submit" class="edit-button">Edit</button>
+                            </form>
+
+                            <form action="delete.php" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($event['eventID']); ?>">
+                                <button type="submit" class="delete-button">Delete</button>
+                            </form>
+
                         </div>
+
+
                     </div>
                 <?php endforeach; ?>
             <?php else : ?>
