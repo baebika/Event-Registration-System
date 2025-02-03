@@ -1,3 +1,29 @@
+<?php
+session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once 'database.php';
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    //Database connection
+    $conn = new Database();
+
+    //Check if user exists
+    $sql = "SELECT * FROM users WHERE email = ? or userName = ?";
+    $hashed_password = sha1(md5($password));
+    $result = $conn->SELECT($sql, [$email, $hashed_password]);
+    if (!empty($result) && count($result) === 1) {
+        $user = $result[0];
+        $_SESSION['usersId'] = $user['usersId'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['userName'] = $user['userName'];
+        header('Location: index.php');
+        exit();
+    } else {
+        echo 'Invalid email or password';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +31,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,13 +45,18 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
+            font-size: 18px;
             background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+        }
+
+        h1 {
+            font-family: 'Merriweather', serif;
         }
 
         .container {
@@ -183,10 +220,10 @@
         </div>
         <div class="login-container">
             <h2>Login</h2>
-            <form action="#" method="post">
+            <form action="login.php" method="post">
                 <div class="input-group">
-                    <label for="username">Username or Email</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" required>
                 </div>
                 <div class="input-group">
                     <label for="password">Password</label>
