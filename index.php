@@ -1,3 +1,12 @@
+<?php
+require_once 'database.php';
+
+// Fetch all events from the database
+$conn = new Database();
+$sql = "SELECT * FROM events";
+$events = $conn->SELECT($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,7 +45,6 @@
         h1 {
             font-family: 'Merriweather', serif;
             /* font-weight: 900; */
-            font-size: 48px;
         }
 
         .home-container {
@@ -151,32 +159,19 @@
     <div class="home-container">
         <h1>Upcoming Events</h1>
         <div class="event-list">
-            <!-- Event 1 -->
-            <div class="event-card">
-                <h2>Tech Conference 2023</h2>
-                <p class="event-date">Date: October 15, 2023</p>
-                <p>Location: Virtual</p>
-                <p>Description: Join us for the biggest tech conference of the year, featuring top industry speakers and workshops.</p>
-                <button class="register-button">Register Now</button>
-            </div>
-
-            <!-- Event 2 -->
-            <div class="event-card">
-                <h2>Music Festival 2023</h2>
-                <p class="event-date">Date: November 5, 2023</p>
-                <p>Location: Central Park, New York</p>
-                <p>Description: Enjoy live performances from your favorite artists at this year's music festival.</p>
-                <button class="register-button">Register Now</button>
-            </div>
-
-            <!-- Event 3 -->
-            <div class="event-card">
-                <h2>Startup Pitch Night</h2>
-                <p class="event-date">Date: December 10, 2023</p>
-                <p>Location: San Francisco, CA</p>
-                <p>Description: Watch innovative startups pitch their ideas to a panel of investors.</p>
-                <button class="register-button">Register Now</button>
-            </div>
+            <?php if (!empty($events)) : ?>
+                <?php foreach ($events as $event) : ?>
+                    <div class="event-card">
+                        <h2><?php echo htmlspecialchars($event['eventName']); ?></h2>
+                        <p class="event-date">Date: <?php echo htmlspecialchars($event['eventDate']); ?></p>
+                        <p>Location: <?php echo htmlspecialchars($event['eventLocation']); ?></p>
+                        <p>Description: <?php echo htmlspecialchars($event['eventDescription']); ?></p>
+                        <button class="register-button">Register Now</button>
+                    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <p>No events found.</p>
+            <?php endif; ?>
         </div>
     </div>
 </body>
