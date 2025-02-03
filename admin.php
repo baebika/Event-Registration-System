@@ -1,3 +1,42 @@
+<?php
+require_once 'database.php';
+$conn = new Database();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $eventName = $_POST['event-name'] ?? null;
+    $eventDate = $_POST['event-date'] ?? null;
+    $eventTime = $_POST['event-time'] ?? null;
+    $eventLocation = $_POST['event-location'];
+    $eventDescription = $_POST['event-description'];
+
+    if (isset($_POST['event-id']) && $_POST['event-id']) {
+        // Update event
+        $eventId = $_POST['event-id'];
+        $sql = "UPDATE events SET eventName = ?, eventDate = ?, eventTime = ?, eventLocation = ?, eventDescription = ? WHERE id = ?";
+        $conn->update($sql, [$eventName, $eventDate, $eventTime, $eventLocation, $eventDescription, $eventId]);
+        echo '<script>alert("Event updated successfully.");</script>';
+    } elseif ($eventName && $eventDate && $eventTime && $eventLocation && $eventDescription) {
+        // Create new event
+        $sql = "INSERT INTO events (eventName, eventDate, eventTime, eventLocation, eventDescription) VALUES (?, ?, ?, ?, ?)";
+        $conn->create($sql, [$eventName, $eventDate, $eventTime, $eventLocation, $eventDescription]);
+        echo '<script>alert("Event created successfully.");</script>';
+    }
+    header('Location: admin.php');
+}
+
+// Handle delete request
+if (isset($_GET['delete-id'])) {
+    $deleteId = $_GET['delete-id'];
+    $sql = "DELETE FROM events WHERE id = ?";
+    $conn->delete($sql, [$deleteId]);
+    echo '<script>alert("Event deleted successfully.");</script>';
+    header('Location: admin.php');
+}
+
+// Fetch existing events
+$events = $conn->SELECT("SELECT * FROM events");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,8 +88,12 @@
         }
 
         .event-form {
-            margin-bottom: 30px;
+            margin-bottom: 5px;
             text-align: left;
+        }
+
+        .event-form h3 {
+            margin-bottom: 30px;
         }
 
         .event-form label {
@@ -126,38 +169,29 @@
             color: #4DA1A9;
         }
 
-        .event-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
+
+
+        .edit-button,
+        .delete-button {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-right: 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: white;
         }
 
-        .event-actions button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+        .edit-button {
+            background-color: #007bff;
         }
 
-        .event-actions .edit-button {
-            background-color: #4DA1A9;
-            color: #fff;
+        .delete-button {
+            background-color: #dc3545;
         }
 
-        .event-actions .edit-button:hover {
-            background-color: #2E5077;
-        }
-
-        .event-actions .delete-button {
-            background-color: #ff4d4d;
-            color: #fff;
-        }
-
-        .event-actions .delete-button:hover {
-            background-color: #cc0000;
+        .delete-button:hover,
+        .edit-button:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -191,45 +225,23 @@
             </form>
         </div>
 
-        <!-- List of Existing Events -->
         <div class="event-list">
             <h2>Existing Events</h2>
+            <?php foreach ($events as $event): ?>
+                <div class="event-card">
+                    <h2><?= htmlspecialchars($event['eventName']) ?></h2>
+                    <p>Date: <?= htmlspecialchars($event['eventDate']) ?> | Time: <?= htmlspecialchars($event['eventTime']) ?></p>
+                    <p>Location: <?= htmlspecialchars($event['eventLocation']) ?></p>
+                    <p>Description: <?= htmlspecialchars($event['eventDescription']) ?></p>
 
-            <!-- Event 1 -->
-            <div class="event-card">
-                <h2>Tech Conference 2023</h2>
-                <p class="event-date">Date: October 15, 2023 | Time: 10:00 AM</p>
-                <p>Location: Virtual</p>
-                <p>Description: Join us for the biggest tech conference of the year, featuring top industry speakers and workshops.</p>
-                <div class="event-actions">
-                    <button class="edit-button">Edit</button>
-                    <button class="delete-button">Delete</button>
+                    <!-- Edit and Delete Buttons -->
+                    <div class="event-actions">
+                        <a href="edit-event.php?id=<?= $event['id'] ?>" class="edit-button">Edit</a>
+                        <a href="?delete-id=<?= $event['id'] ?>" class="delete-button" onclick="return confirm('Are you sure you want to delete this event?')">Delete</a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Event 2 -->
-            <div class="event-card">
-                <h2>Music Festival 2023</h2>
-                <p class="event-date">Date: November 5, 2023 | Time: 6:00 PM</p>
-                <p>Location: Central Park, New York</p>
-                <p>Description: Enjoy live performances from your favorite artists at this year's music festival.</p>
-                <div class="event-actions">
-                    <button class="edit-button">Edit</button>
-                    <button class="delete-button">Delete</button>
-                </div>
-            </div>
-
-            <!-- Event 3 -->
-            <div class="event-card">
-                <h2>Startup Pitch Night</h2>
-                <p class="event-date">Date: December 10, 2023 | Time: 7:00 PM</p>
-                <p>Location: San Francisco, CA</p>
-                <p>Description: Watch innovative startups pitch their ideas to a panel of investors.</p>
-                <div class="event-actions">
-                    <button class="edit-button">Edit</button>
-                    <button class="delete-button">Delete</button>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </body>
