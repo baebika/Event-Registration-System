@@ -265,9 +265,10 @@ $events = $conn->SELECT($sql);
                             </form>
 
                             <form action="delete.php" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this event?');">
-                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($event['eventID']); ?>">
+                                <input type="hidden" name="eventID" value="<?php echo htmlspecialchars($event['eventID']); ?>">
                                 <button type="submit" class="delete-button">Delete</button>
                             </form>
+
 
                         </div>
 
