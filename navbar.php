@@ -30,15 +30,12 @@
             /* font-weight: 900; */
         }
 
-        .hero {
-            /* background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0');
-            background-size: cover;
-            background-position: center; */
+        /* .hero {
             width: 100%;
             min-height: 100vh;
             z-index: 1000;
 
-        }
+        } */
 
         nav {
             background: #4DA1A9;

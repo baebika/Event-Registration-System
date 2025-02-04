@@ -19,10 +19,8 @@ $events = $conn->SELECT($sql);
     <title>Home - Event Registration System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -30,64 +28,54 @@ $events = $conn->SELECT($sql);
             box-sizing: border-box;
         }
 
+        html,
         body {
+            height: 100%;
             font-family: 'Roboto', sans-serif;
-            font-size: 18px;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
         }
 
-        h1 {
-            font-family: 'Merriweather', serif;
-            /* font-weight: 900; */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #f4f4f4;
+            margin: 0;
         }
 
         .home-container {
-            background-color: #fff;
+            flex: 1;
             padding: 30px;
+            background-color: #fff;
+            margin: 20px auto;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             width: 90%;
             max-width: 800px;
-            /* text-align: center;
-            position: relative; */
-            margin: auto;
-            margin-top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+        }
+
+        .footer-container {
+            width: 100%;
+            background-color: #2E5077;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-content p {
+            margin: 0;
+        }
+
+        h1 {
+            font-family: 'Merriweather', serif;
         }
 
         h1 {
             margin-bottom: 20px;
             color: #333;
             font-size: 28px;
-        }
-
-        .switch-menu {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .switch-menu button {
-            padding: 10px 20px;
-            background-color: #4DA1A9;
-            color: #fff;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .switch-menu button:hover {
-            background-color: #2E5077;
         }
 
         .event-list {
@@ -174,6 +162,9 @@ $events = $conn->SELECT($sql);
             <?php endif; ?>
         </div>
     </div>
+
+    <!-- Include Footer -->
+    <?php require 'footer.php'; ?>
 </body>
 
 </html>

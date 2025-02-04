@@ -52,15 +52,33 @@ $events = $conn->SELECT($sql);
             box-sizing: border-box;
         }
 
+        html,
         body {
+            height: 100%;
             font-family: 'Roboto', sans-serif;
-            font-size: 18px;
-            background-color: #f4f4f4;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            justify-content: space-between;
+            background-color: #f4f4f4;
             margin: 0;
-            padding: 20px;
+        }
+
+        .footer-container {
+            width: 100%;
+            background-color: #2E5077;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-content p {
+            margin: 0;
         }
 
         .admin-container {
@@ -72,14 +90,6 @@ $events = $conn->SELECT($sql);
             width: 90%;
             max-width: 800px;
             margin: auto;
-        }
-
-        .footer {
-            text-align: center;
-            color: #fff;
-            padding: 10px 0;
-            position: relative;
-            width: 100%;
         }
 
         /* body {
