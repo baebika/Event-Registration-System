@@ -173,13 +173,13 @@
                 <li><a href="index.php">Home</a></li>
                 <li><a href="admin.php">Switch to Admin Page</a></li>
             </ul>
-            <img src="./img/profile.png" alt="Default Profile Image" class="user-pic" onclick="toggleMenu()">
+            <img src="<?= isset($_SESSION['profile_pic']) && file_exists($_SESSION['profile_pic']) ? $_SESSION['profile_pic'] : './img/default-profile.png'; ?>" alt="User Profile" class="user-pic" onclick="toggleMenu()">
 
             <div class="sub-menu-wrap" id="sub-menu">
                 <div class="sub-menu">
                     <div class="user-info">
-                        <img src="./img/profile.png" alt="Default Profile Image">
-                        <h3>User Name</h3>
+                        <img src="<?= isset($_SESSION['profile_pic']) ? $_SESSION['profile_pic'] : './img/default-profile.png'; ?>" alt="Profile Picture">
+                        <h3><?= $_SESSION['userName'] ?? 'User Name'; ?></h3>
                     </div>
                     <hr>
                     <a href="profile.php" class="sub-menu-link">
