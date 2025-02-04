@@ -46,7 +46,43 @@ $events = $conn->SELECT($sql);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 18px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .admin-container {
+            margin-top: 60px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .footer {
+            text-align: center;
+            color: #fff;
+            padding: 10px 0;
+            position: relative;
+            width: 100%;
+        }
+
+        /* body {
             font-family: 'Roboto', sans-serif;
             font-size: 18px;
             background-color: #f4f4f4;
@@ -56,27 +92,12 @@ $events = $conn->SELECT($sql);
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-        }
+        } */
 
         h1 {
             font-family: 'Merriweather', serif;
             /* font-weight: 900; */
             margin-bottom: 20px;
-        }
-
-        .admin-container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 800px;
-            /* text-align: center;
-            position: relative; */
-            margin: auto;
-            margin-top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
         }
 
         .event-form {
@@ -97,7 +118,8 @@ $events = $conn->SELECT($sql);
 
         .event-form input,
         .event-form textarea {
-            font-family: 'Roboto', sans-serif;;
+            font-family: 'Roboto', sans-serif;
+            ;
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -256,6 +278,9 @@ $events = $conn->SELECT($sql);
                 <p>No events found.</p>
             <?php endif; ?>
         </div>
+    </div>
+    <div class="footer">
+        <?php require 'footer.php'; ?>
     </div>
 </body>
 

@@ -24,16 +24,22 @@
             padding-top: 60px;
         }
 
-        footer {
+        /* footer {
             background-color: #2E5077;
             color: white;
             padding: 20px 0;
             text-align: center;
             font-size: 14px;
             margin-top: 30px;
-        }
+        } */
 
         .footer-container {
+            background-color: #4DA1A9;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -69,23 +75,12 @@
 </head>
 
 <body>
-    <footer>
-        <div class="footer-container">
-            <div class="footer-content">
-                <p>&copy; <?php echo date("Y"); ?> Event Registration. All rights reserved.</p>
-            </div>
-            <div class="footer-links">
-                <a href="index.php">Home</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a>
-                <a href="#">Terms & Privacy</a>
-            </div>
-            <div class="social-icons">
-                <a href="#" target="_blank"><img src="icons/facebook.svg" alt="Facebook"></a>
-                <a href="#" target="_blank"><img src="icons/instagram.svg" alt="Instagram"></a>
-            </div>
+    <div class="footer-container">
+        <div class="footer-content">
+            <p>&copy; <?php echo date("Y"); ?> Event Registration. All rights reserved.</p>
         </div>
-    </footer>
+    </div>
+
 </body>
 
 </html>
