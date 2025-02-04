@@ -24,17 +24,20 @@ if (!$user) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
+    $firstName = $_POST['first_name'];
+    $lastName = $_POST['last_name'];
+    $contactNumber = $_POST['contact_number'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     // Handle profile picture upload
-    $profile_pic = $user['profile_pic']; // Keep the current profile picture if no new one is uploaded
+    $profile_pic = $user['profile_pic']; // Keep current profile picture if no new one is uploaded
 
     if (!empty($_FILES['profile-pic']['name'])) {
         $target_dir = "uploads/";
         $profile_pic = $target_dir . basename($_FILES["profile-pic"]["name"]);
 
-        // Move uploaded file and handle errors
+        // Move uploaded file
         if (!move_uploaded_file($_FILES["profile-pic"]["tmp_name"], $profile_pic)) {
             echo "<script>alert('Failed to upload the profile picture. Please try again.');</script>";
         }
@@ -42,13 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare the update query
     if (!empty($password)) {
-        // Hash the password before storing it
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-        $query = "UPDATE users SET userName = ?, email = ?, password = ?, profile_pic = ? WHERE usersId = ?";
-        $params = [$username, $email, $hashed_password, $profile_pic, $userId];
+        $query = "UPDATE users SET userName = ?, first_name = ?, last_name = ?, contact_number = ?, email = ?, password = ?, profile_pic = ? WHERE usersId = ?";
+        $params = [$username, $firstName, $lastName, $contactNumber, $email, $hashed_password, $profile_pic, $userId];
     } else {
-        $query = "UPDATE users SET userName = ?, email = ?, profile_pic = ? WHERE usersId = ?";
-        $params = [$username, $email, $profile_pic, $userId];
+        $query = "UPDATE users SET userName = ?, first_name = ?, last_name = ?, contact_number = ?, email = ?, profile_pic = ? WHERE usersId = ?";
+        $params = [$username, $firstName, $lastName, $contactNumber, $email, $profile_pic, $userId];
     }
 
     $stmt = $conn->prepare($query);
@@ -64,7 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -93,6 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             width: 400px;
             text-align: center;
+            margin-top: 280px;
         }
 
         h2 {
@@ -150,29 +152,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .update-button:hover {
             background-color: #2E5077;
         }
-
-        .alert {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
     </style>
 </head>
-
 <body>
     <div class="navbar">
         <?php require 'navbar.php'; ?>
@@ -189,6 +170,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="input-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" value="<?= htmlspecialchars($user['userName']); ?>" required>
+            </div>
+            <div class="input-group">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" value="<?= htmlspecialchars($user['first_name'] ?? ''); ?>" required>
+            </div>
+            <div class="input-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" value="<?= htmlspecialchars($user['last_name'] ?? ''); ?>" required>
+            </div>
+            <div class="input-group">
+                <label for="contact_number">Contact Number</label>
+                <input type="text" id="contact_number" name="contact_number" value="<?= htmlspecialchars($user['contact_number'] ?? ''); ?>" required>
             </div>
             <div class="input-group">
                 <label for="email">Email</label>
@@ -212,5 +205,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </script>
 </body>
-
 </html>
