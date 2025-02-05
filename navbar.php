@@ -187,7 +187,7 @@
                         <p>Edit Profile</p>
                         <span> > </span>
                     </a>
-                    <a href="login.php" class="sub-menu-link">
+                    <a href="./logout.php" class="sub-menu-link" id="logout-link">
                         <img src="./img/logout.png" alt="Logout Icon">
                         <p>Logout</p>
                         <span>></span>
@@ -205,6 +205,15 @@
         function toggleMenu() {
             subMenu.classList.toggle('open-menu');
         }
+
+        // Logout confirmation
+        document.getElementById('logout-link').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default action of the link
+            if (confirm('Are you sure you want to log out?')) {
+                // Redirect to the logout page if confirmed
+                window.location.href = this.href;
+            }
+        });
     </script>
 </body>
 
